@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAPL Mail | Coming Soon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #FF6600;
+            --primary-dark: #A33E00;
+            --bg: #1A1C1C;
+            --text: #FFFFFF;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Abstract Background blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 10s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        }
+
+        .blob-1 {
+            width: 500px;
+            height: 500px;
+            background: #ff6600;
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 400px;
+            height: 400px;
+            background: #222222;
+            bottom: -50px;
+            right: -100px;
+            animation-delay: -2s;
+        }
+
+        .blob-3 {
+            width: 300px;
+            height: 300px;
+            background: #ff6600;
+            bottom: 20%;
+            left: 20%;
+            opacity: 0.2;
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(30px, 50px) scale(1.1);
+            }
+        }
+
+        /* Home Button */
+        .home-btn {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 1px solid var(--glass-border);
+            padding: 12px 24px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            background: var(--glass);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .home-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Main Content Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+
+        /* 3D Envelope Animation */
+        .envelope-container {
+            width: 120px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            margin: 0 auto 40px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--glass-border);
+            animation: float-icon 3s ease-in-out infinite;
+        }
+
+        @keyframes float-icon {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .envelope-flap::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translate(-50%, 0) rotate(45deg);
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+        }
+
+        .mail-icon {
+            font-size: 30px;
+            color: var(--primary);
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slide-up-fade 0.8s 0.2s forwards ease-out;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            background: linear-gradient(to right, #fff, #aaa);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: reveal-text 1s 0.5s forwards cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        h2 {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 40px;
+            letter-spacing: -2px;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slide-up-fade 1s 0.7s forwards cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* Glitch effect on hover */
+        h2:hover {
+            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+            color: #fff;
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translate(0)
+            }
+
+            20% {
+                transform: translate(-2px, 2px)
+            }
+
+            40% {
+                transform: translate(-2px, -2px)
+            }
+
+            60% {
+                transform: translate(2px, 2px)
+            }
+
+            80% {
+                transform: translate(2px, -2px)
+            }
+
+            100% {
+                transform: translate(0)
+            }
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slide-up-fade 1s 0.9s forwards ease-out;
+        }
+
+        /* Notify Form */
+        .notify-form {
+            margin-top: 50px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            opacity: 0;
+            animation: fade-in 1s 1.2s forwards;
+        }
+
+        .notify-input {
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            width: 300px;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .notify-input:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .notify-btn {
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .notify-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.4);
+        }
+
+        /* Animations */
+        @keyframes reveal-text {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slide-up-fade {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fade-in {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Progress Bar for visual effect */
+        .progress-container {
+            width: 200px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 60px auto 0;
+            border-radius: 2px;
+            overflow: hidden;
+            opacity: 0;
+            animation: fade-in 1s 1.5s forwards;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            animation: progress 20s infinite linear;
+        }
+
+        @keyframes progress {
+            0% {
+                width: 0%;
+            }
+
+            50% {
+                width: 70%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+
+            h1,
+            h2 {
+                font-size: 3rem;
+            }
+
+            .blob {
+                width: 250px;
+                height: 250px;
+            }
+
+            .notify-input {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <a href="wapl_workbench.html" class="home-btn">&larr; Back to WAPL</a>
+
+    <div class="container">
+        <div class="envelope-container">
+            <div class="envelope-flap"></div>
+            <div class="mail-icon">✉️</div>
+        </div>
+
+        <h1>WAPL MAIL</h1>
+        <h2>COMING SOON</h2>
+
+        <p>We are building the future of intelligent communication. Experience a unified workflow like never before.</p>
+
+        <div class="notify-form">
+            <input type="email" class="notify-input" placeholder="Enter your email for early access">
+            <button class="notify-btn">Notify Me</button>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+
+        <div class="social-icons" style="display: flex; gap: 1rem; margin-top: 2.5rem; justify-content: center;">
+            <a href="https://www.facebook.com/people/WAPL/61584921947302/" target="_blank" style="color: rgba(255, 255, 255, 0.6); font-size: 1.2rem; transition: all 0.3s ease;"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://x.com/waplcompany" target="_blank" style="color: rgba(255, 255, 255, 0.6); font-size: 1.2rem; transition: all 0.3s ease;"><i class="fab fa-x-twitter"></i></a>
+            <a href="https://www.instagram.com/waplcompany/" target="_blank" style="color: rgba(255, 255, 255, 0.6); font-size: 1.2rem; transition: all 0.3s ease;"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@waplcompany" target="_blank" style="color: rgba(255, 255, 255, 0.6); font-size: 1.2rem; transition: all 0.3s ease;"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.linkedin.com/company/waplcompany" target="_blank" style="color: rgba(255, 255, 255, 0.6); font-size: 1.2rem; transition: all 0.3s ease;"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+    </div>
+
+    <script>
+        // Simple parallax effect for blobs
+        document.addEventListener('mousemove', (e) => {
+            const blobs = document.querySelectorAll('.blob');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            blobs.forEach((blob, index) => {
+                const speed = (index + 1) * 20;
+                blob.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+    </script>
+</body>
+
+<script>
+// Prevent default for placeholder links (if any are added in the future)
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('a.placeholder-link').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+        });
+    });
+});
+</script>
+</html>
